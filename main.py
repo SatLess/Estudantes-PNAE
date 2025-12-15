@@ -14,24 +14,15 @@ qtd_anos = len(alunos_por_ano)
 
 variacao_percentual_anual = [0.0]
 for i in range(1, qtd_anos):
-    variacao_percentual_anual.append(variacao_percentual(alunos_por_ano,i - 1, i) * 100)
+    variacao_percentual_anual.append(round(variacao_percentual(alunos_por_ano,i - 1, i), 4))
 
 alunos_por_ano.insert(1, "Variação percentual", variacao_percentual_anual)
-alunos_por_ano.loc[len(alunos_por_ano)] = ["Variação percentual total:", variacao_percentual(alunos_por_ano, 0, -1)]
-alunos_por_ano.loc[len(alunos_por_ano)] = ["Média de alunos beneficiados por ano:", total_beneficiados/(qtd_anos - 1)]
 alunos_por_ano.to_csv(OUTUPUT_PATH + "alunos_por_ano.csv")
 #endregion
 
 #region Alunos divididos por etapa escolar
-etapa_escolar = tabela[["Ano", "Etapa_ensino", QTD_ALUNOS]]
-alunos_fundamental = etapa_escolar.loc[etapa_escolar["Etapa_ensino"] == "ENSINO FUNDAMENTAL"].groupby(["Etapa_ensino","Ano"]).sum()
-alunos_fundamental.to_csv(OUTUPUT_PATH + "alunos_por_etapa_fundamental.csv")
-
-alunos_medio = etapa_escolar.loc[etapa_escolar["Etapa_ensino"] == "ENSINO MÉDIO"].groupby(["Etapa_ensino","Ano"]).sum()
-alunos_medio.to_csv(OUTUPUT_PATH + "alunos_por_etapa_medio.csv")
-
-alunos_eja = etapa_escolar.loc[etapa_escolar["Etapa_ensino"] == "EDUCAÇÃO DE JOVENS E ADULTOS (EJA)"].groupby(["Etapa_ensino","Ano"]).sum()
-alunos_eja.to_csv(OUTUPUT_PATH + "alunos_por_etapa_eja.csv")
+etapa_escolar = tabela[["Ano", "Etapa_ensino", QTD_ALUNOS]].groupby(["Etapa_ensino","Ano"]).sum()
+etapa_escolar.to_csv(OUTUPUT_PATH + "aluno_por_etapa_escolar.csv")
 #endregion
 
 
